@@ -1,21 +1,9 @@
+import numpy as np
+import torch
+
 def get_connection_table(dfCorr, target: str):
     dfConn = dfCorr.explode(target)
     return dfConn
-
-'''
-def get_connection_table(dfCorr, source: str, target: str, separator=','):
-    # Check target type
-    target_type = type(dfCorr[target])
-    if target_type == 'str':
-        dfCorr[target] = dfCorr[target].apply(lambda x: x.split(separator))
-    elif target_type == 'list':
-        # Do nothing
-    else:
-        print('Data type is incompatible.')
-        break
-    dfConn = dfCorr.explode(target)
-    return dfConn
-'''
 
 def node_indices(dfConn, source: str, target: str):
     # Construct node indices
@@ -41,3 +29,29 @@ def map_to_idx(dfConn, source: str, target: str, inplace=False):
         dfConn_copy[source] = dfConn_copy[source].map(source_to_idx)
         dfConn_copy[target] = dfConn_copy[target].map(target_to_idx)
         return dfConn_copy
+
+def get_mutual_table(dfConn, on: str, by: str, self_loop=True):
+    # Construct homogenous graph (sigle node type) with undirected edge
+    contentGraph = dfConn.merge(dfConn, on=by)
+    if not self_loop:
+        contentGraph = contentGraph.loc[contentGraph[on + '_x'] != contentGraph[on + '_y']]
+    return contentGraph
+
+def edge_index(dfConn, source: str, target: str, add_self_loop: bool = False, undirected: bool = False, output_type: str = 'numpy'):
+    edge_index = np.transpose(dfConn[[source, target]].to_numpy())
+    
+    if add_self_loop:
+        self_loop = np.arange(dfConn.shape[0])
+        edge_index = np.concatenate((edge_index, [self_loop]))
+    
+    if undirected:
+        reverse_edge_index = np.flip(edge_index, axis=0)
+        edge_index = np.concatenate((edge_index, reverse_edge_index), axis=1)
+    
+    if output_type == 'numpy':
+        return edge_index
+    elif output_type == 'torch':
+        edge_index = torch.tensor(edge_index, dtype=torch.long)
+        return edge_index
+    else:
+        raise ValueError("Invalid output_type. Please choose 'numpy' or 'torch'.")
