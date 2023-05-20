@@ -29,3 +29,17 @@ from GraphPrepKit import construct, homo, hetero
 |'t0002'|'u0001'|
 |'t0002'|'u0008'|
 |'t0002'|'u0012'|
+
+### Map unique ID to it associated index
+```python
+>>> map_to_index(dfConn, source='source', target='target', inplace=True)
+>>> dfConn
+```
+|source|target|
+|------|------|
+|0|0|
+|0|1|
+|0|3|
+|1|0|
+|1|2|
+|1|4|
