@@ -18,7 +18,7 @@ from GraphPrepKit import construct, homo, hetero
   |'t0002'|['u0001', 'u0008', 'u0012']|
   
   ```python
-  >>> dfConn = construct.get_connection_table(df, target='retweeter_ids')
+  >>> dfConn = construct.get_connection_table(df, target='target')
   >>> dfConn
   ```
 |source|target|
