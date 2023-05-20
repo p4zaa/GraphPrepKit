@@ -33,11 +33,18 @@ def map_to_idx(dfConn, source: str, target: str, inplace=False):
 def get_mutual_table(dfConn, on: str, by: str, self_loop=True):
     '''
     Construct homogenous graph (sigle node type) with undirected edge
+    Parameters:
+        on: str -> column that will apply mutual information
+        by: str -> column that will use for retrieve mutual information
+        self_loop: boolean -> True: apply self-loop
+    Example:
+        on='content_id', by='topic_id'
+        this will generate mutual connection betweeen each content_id based on mutual topic_id
     '''
     contentGraph = dfConn.merge(dfConn, on=by)
     if not self_loop:
         contentGraph = contentGraph.loc[contentGraph[on + '_x'] != contentGraph[on + '_y']]
-    return contentGraph
+    return contentGraph[[by, on + '_x', on + '_y']]
 
 def edge_index(dfConn, source: str, target: str, output_type='numpy'):
     '''
