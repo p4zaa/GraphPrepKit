@@ -10,7 +10,22 @@ from GraphPrepKit import construct, homo, hetero
 ```
 
 # Graph Dataset Construction
-  ### Construct correlation data
+  ### Construct connection dataframe
+  **Note** `target` column **must** contain list of connected elements. Example
+  |source|target|
+  |------|------|
+  |'t0001'|['u0001', 'u0005', 'u0010']|
+  |'t0002'|['u0001', 'u0008', 'u0012']|
+  
   ```python
-  ...
+  >>> dfConn = construct.get_connection_table(df, target='retweeter_ids')
+  >>> dfConn
   ```
+|source|target|
+|------|------|
+|'t0001'|'u0001'|
+|'t0001'|'u0005'|
+|'t0001'|'u0010'|
+|'t0002'|'u0001'|
+|'t0002'|'u0008'|
+|'t0002'|'u0012'|
