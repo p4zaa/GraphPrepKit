@@ -10,7 +10,7 @@ def edge_index_torch(dfConn, source: str, target: str):
     edge_index = torch.tensor(np.transpose(contentGraph[[source, target]].to_numpy()),dtype=torch.long)
     return edge_index
 
-def get_mutual_conn(dfConn, on: str, by: str, self_loop=True):
+def get_mutual_table(dfConn, on: str, by: str, self_loop=True):
     # Construct homogenous graph (sigle node type) with undirected edge
     contentGraph = dfConn.merge(dfConn, on=by)
     if not self_loop:
