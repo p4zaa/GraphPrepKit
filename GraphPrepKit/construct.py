@@ -31,27 +31,24 @@ def map_to_idx(dfConn, source: str, target: str, inplace=False):
         return dfConn_copy
 
 def get_mutual_table(dfConn, on: str, by: str, self_loop=True):
-    # Construct homogenous graph (sigle node type) with undirected edge
+    '''
+    Construct homogenous graph (sigle node type) with undirected edge
+    '''
     contentGraph = dfConn.merge(dfConn, on=by)
     if not self_loop:
         contentGraph = contentGraph.loc[contentGraph[on + '_x'] != contentGraph[on + '_y']]
     return contentGraph
 
-def edge_index(dfConn, source: str, target: str, add_self_loop: bool = False, undirected: bool = False, output_type: str = 'numpy'):
+def edge_index(dfConn, source: str, target: str, output_type='numpy'):
+    '''
+    Construct `edge_index`
+    self-loop and directed edge are depend on input graph dataframe (dfConn)
+    undirected edge (node1)<--[UNDIRECTED]-->(node2)
+    directed edge (node1)--[DIRECTED]-->(node2)
+    '''
     edge_index = np.transpose(dfConn[[source, target]].to_numpy())
     
-    if add_self_loop:
-        self_loop = np.arange(dfConn.shape[0])
-        edge_index = np.concatenate((edge_index, [self_loop]))
-    
-    if undirected:
-        reverse_edge_index = np.flip(edge_index, axis=0)
-        edge_index = np.concatenate((edge_index, reverse_edge_index), axis=1)
-    
-    if output_type == 'numpy':
-        return edge_index
-    elif output_type == 'torch':
+    if output_type == 'torch':
         edge_index = torch.tensor(edge_index, dtype=torch.long)
-        return edge_index
-    else:
-        raise ValueError("Invalid output_type. Please choose 'numpy' or 'torch'.")
+    
+    return edge_index
