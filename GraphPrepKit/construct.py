@@ -41,10 +41,10 @@ def get_mutual_table(dfConn, on: str, by: str, self_loop=True):
         on='content_id', by='topic_id'
         this will generate mutual connection betweeen each content_id based on mutual topic_id
     '''
-    contentGraph = dfConn.merge(dfConn, on=by)
+    contentGraph = dfConn[[by, on]].merge(dfConn[[by, on]], on=by)
     if not self_loop:
         contentGraph = contentGraph.loc[contentGraph[on + '_x'] != contentGraph[on + '_y']]
-    return contentGraph[[by, on + '_x', on + '_y']]
+    return contentGraph
 
 def edge_index(dfConn, source: str, target: str, output_type='numpy'):
     '''
