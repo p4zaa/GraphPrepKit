@@ -1,3 +1,22 @@
+def get_connection_table(dfCorr, target: str):
+    dfConn = dfCorr.explode(target)
+    return dfConn
+
+'''
+def get_connection_table(dfCorr, source: str, target: str, separator=','):
+    # Check target type
+    target_type = type(dfCorr[target])
+    if target_type == 'str':
+        dfCorr[target] = dfCorr[target].apply(lambda x: x.split(separator))
+    elif target_type == 'list':
+        # Do nothing
+    else:
+        print('Data type is incompatible.')
+        break
+    dfConn = dfCorr.explode(target)
+    return dfConn
+'''
+
 def node_indices(dfConn, source: str, target: str):
     # Construct node indices
     all_source_ids = dfConn[source].unique().tolist()
