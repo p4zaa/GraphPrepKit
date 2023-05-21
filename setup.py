@@ -9,5 +9,6 @@ setup(
         'numpy',
         'pandas',
         'torch',
+        'pyvis',
     ],
 )
