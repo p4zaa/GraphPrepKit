@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import torch
 
 def get_connection_table(dfCorr, target: str):
@@ -17,8 +18,19 @@ def node_indices(dfConn, source: str, target: str):
 
     return source_to_idx, target_to_idx, idx_to_source, idx_to_target
 
-def map_to_idx(dfConn, source: str, target: str, inplace=False):
-    source_to_idx, target_to_idx, _, _ = node_indices(dfConn, source, target)
+def map_to_idx(dfConn: pd.core.frame.DataFrame, source: str, target: str, type='homo', inplace=False, dropna=True):
+    assert type == 'hetero' or type == 'homo', "Invalid type parameter: only 'homo' or 'hetero'"
+
+    if dropna:
+      dfConn = dfConn.dropna(axis=0, how='any', subset=[source, target], inplace=False)
+
+    if type == 'hetero':
+        source_to_idx, target_to_idx, _, _ = node_indices(dfConn, source, target)
+    elif type == 'homo':
+        combined_nodes = list(set(dfConn[source].unique()).union(set(dfConn[target].unique())))
+        combined_to_idx = {node: idx for idx, node in enumerate(combined_nodes)}
+        source_to_idx = combined_to_idx
+        target_to_idx = combined_to_idx
 
     if inplace:
         dfConn[source] = dfConn[source].map(source_to_idx)
