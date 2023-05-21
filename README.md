@@ -32,7 +32,7 @@ from GraphPrepKit import construct, homo, hetero
 
 ### Map unique ID to it associated index
 ```python
->>> map_to_idx(dfConn, source='source', target='target', inplace=True)
+>>> map_to_idx(dfConn, source='source', target='target', type='hetero', inplace=True)
 >>> dfConn
 ```
 |source|target|
