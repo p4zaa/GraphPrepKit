@@ -1,7 +1,10 @@
 # GraphPrepKit 🕸🛟
 GraphPrepKit 🕸🛟 is a powerful and versatile graph preprocessing library designed to simplify and streamline the data preparation phase for graph-based applications. It provides a comprehensive set of tools and utilities to efficiently preprocess graphs, allowing users to transform, clean, and manipulate graph data with ease.
 
-# Installation
+# Wiki 📚
+[👉 Documentation Here 📑](https://github.com/p4zaa/GraphPrepKit/wiki)
+
+# Installation ⚙️
 ```python
 pip install -q git+'https://github.com/p4zaa/GraphPrepKit.git'
 ```
@@ -9,7 +12,7 @@ pip install -q git+'https://github.com/p4zaa/GraphPrepKit.git'
 from GraphPrepKit import construct, homo, hetero
 ```
 
-# Graph Dataset Construction
+# Graph Dataset Construction 🛠️
   ### Construct connection dataframe
   **Note** `target` column **must** contain list of connected elements. Example
   |source|target|
@@ -30,7 +33,7 @@ from GraphPrepKit import construct, homo, hetero
 |'t0002'|'u0008'|
 |'t0002'|'u0012'|
 
-### Map unique ID to it associated index
+### Map unique ID to its associated index
 ```python
 >>> map_to_idx(dfConn, source='source', target='target', type='hetero', inplace=True)
 >>> dfConn
