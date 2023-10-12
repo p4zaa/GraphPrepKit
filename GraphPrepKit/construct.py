@@ -6,7 +6,7 @@ def get_connection_table(dfCorr, target: str):
     dfConn = dfCorr.explode(target)
     return dfConn
 
-def node_indices(dfConn, source: str, target: str):
+def node_indices(dfConn: pd.core.frame.DataFrame, source: str, target: str):
     # Construct node indices
     all_source_ids = dfConn[source].unique().tolist()
     all_target_ids = dfConn[target].unique().tolist()
@@ -42,7 +42,7 @@ def map_to_idx(dfConn: pd.core.frame.DataFrame, source: str, target: str, type='
         dfConn_copy[target] = dfConn_copy[target].map(target_to_idx)
         return dfConn_copy
 
-def get_mutual_table(dfConn, on: str, by: str, self_loop=True):
+def get_mutual_table(dfConn: pd.core.frame.DataFrame, on: str, by: str, self_loop=True):
     '''
     Construct homogenous graph (sigle node type) with undirected edge
     Parameters:
@@ -58,7 +58,7 @@ def get_mutual_table(dfConn, on: str, by: str, self_loop=True):
         contentGraph = contentGraph.loc[contentGraph[on + '_x'] != contentGraph[on + '_y']]
     return contentGraph
 
-def edge_index(dfConn, source: str, target: str, output_type='numpy'):
+def edge_index(dfConn: pd.core.frame.DataFrame, source: str, target: str, output_type='numpy'):
     '''
     Construct `edge_index`
     self-loop and directed edge are depend on input graph dataframe (dfConn)
