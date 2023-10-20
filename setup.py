@@ -10,5 +10,6 @@ setup(
         'pandas',
         'torch',
         'polars>=0.19.5',
+        'pyvis',
     ],
 )
